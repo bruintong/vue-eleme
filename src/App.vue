@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-header></v-header>
-    <div class="tab">
+    <div class="tab border-1px">
       <div class="tab-item">
         <router-link to="/goods">商品</router-link>
       </div>
@@ -15,7 +15,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import header from './components/header/header';
+import header from 'components/header/header';
 
 export default {
   name: 'app',
@@ -26,14 +26,22 @@ export default {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "common/stylus/index.styl"
+
   #app
     .tab
-      display: flex;
-      width: 100%;
-      height: 45px;
-      line-height: 45px;
+      display: flex
+      width: 100%
+      height: 45px
+      line-height: 45px
+      border-1px(#e9e9e9)
       .tab-item
         flex: 1;
-        text-align: center;
-
+        text-align: center
+        & > a
+          display: block
+          font-size: 14px
+          color: #4a4a4a
+          &.active
+            color: #85bdf1
 </style>
