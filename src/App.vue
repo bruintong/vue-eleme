@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <v-header></v-header>
+    <v-header v-bind:data="restaurant"></v-header>
     <div class="tab border-1px">
       <div class="tab-item">
         <router-link to="/goods">商品</router-link>
@@ -17,6 +17,8 @@
 <script type="text/ecmascript-6">
 import header from 'components/header/header';
 
+const ERR_OK = 0;
+
 export default {
   data() {
     return {
@@ -24,6 +26,12 @@ export default {
     };
   },
   created() {
+    this.$axios.get('/api/restaurant').then((res) => {
+      if (res.data.errno === ERR_OK) {
+        this.restaurant = res.data.data;
+        console.log(this.restaurant);
+      }
+    });
   },
   name: 'app',
   components: {
