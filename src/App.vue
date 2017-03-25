@@ -18,6 +18,13 @@
 import header from 'components/header/header';
 
 export default {
+  data() {
+    return {
+      restaurant: {}
+    };
+  },
+  created() {
+  },
   name: 'app',
   components: {
     'v-header': header
