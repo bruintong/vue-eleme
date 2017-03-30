@@ -32,6 +32,7 @@
   };
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "../../common/stylus/mixin.styl";
   .header
     color #fff
     background #000
@@ -45,12 +46,24 @@
         display inline-block
         width 65px
         height 65px
+        border-radius 2px
       .content
         display inline-block
         font-size 14px
         margin-left 14px
+        line-height 1.4285
+        .brand
+          display: inline-block
+          width: 30px
+          height: 18px
+          bg-image('brand')
+          background-size 30px 18px
+          background-repeat no-repeat
+          vertical-align top
         .name
           font-size 16px
+          margin-left 6px
+          font-weight bold
         .delivery
           font-size 12px
         .promotion
