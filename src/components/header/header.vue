@@ -111,7 +111,7 @@
         align-self flex-end
         right 12px
         bottom 18px
-        padding 0 8px
+        padding 0 12px
         height 24px
         line-height 24px
         border-radius 12px
@@ -121,6 +121,19 @@
           font-size 10px
         .icon-keyboard_arrow_right
           font-size 10px
+          position relative
+          &::after
+            content ' '
+            width 6px
+            height 6px
+            display: inline-block;
+            position: absolute;
+            top: 50%;
+            transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+            margin-top: -4px;
+            border-width: 1px 1px 0px 0px;
+            border-color: #fff;
+            border-style: solid;
     .promotion
       display flex
       flex-direction: row
