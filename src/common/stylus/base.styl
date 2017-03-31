@@ -1,6 +1,17 @@
 body, html
   font-family: 'PingFang SC', "STHeitiSC-Light", "Helvetica-Light", "arial", "sans-serif"
 
+.clearfix
+  display inline-block
+  &::after
+    display block
+    content ' '
+    height 0px
+    width 0px
+    line-height 0px
+    visibility hidden
+    clear both
+
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-device-aspect-ratio: 1.5)
   .border-1px
     &::after

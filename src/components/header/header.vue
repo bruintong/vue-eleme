@@ -15,18 +15,28 @@
           <span class="text">{{data.activities[0].description}}</span>
         </div>
       </div>
-      <div v-if="data.activities" class="activity-count">
+      <div v-if="data.activities" class="activity-count" @click="showDetail">
         <span class="count">{{data.activities.length}}个</span>
         <i class="icon-keyboard_arrow_right"></i>
       </div>
     </div>
-    <div class="promotion">
+    <div class="promotion" @click="showDetail">
       <span class="promotion-title"></span>
       <span class="promotion-info">{{data.promotion_info}}</span>
       <i class="icon-keyboard_arrow_right"></i>
     </div>
     <div class="background">
       <img :src="data.image_path" width="100%" height="100%">
+    </div>
+    <div v-show="detailShow" class="detail">
+      <div class="detail-wrapper clearfix">
+        <div class="detail-main">
+          <h1 class="name">{{data.name}}</h1>
+        </div>
+      </div>
+      <div class="detail-close">
+        <i class="icon-close"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -37,7 +47,16 @@
         type: Object
       }
     },
-    method: {},
+    data() {
+      return {
+        detailShow: false
+      };
+    },
+    methods: {
+      showDetail() {
+        this.detailShow = true;
+      }
+    },
     created() {
       this.classMap = {
         '102': 'decrease',
@@ -179,4 +198,31 @@
       height 100%
       z-index -1
       filter blur(10px)
+    .detail
+      position fixed
+      top 0
+      left 0
+      z-index 1
+      width 100%
+      height 100%
+      overflow auto
+      background rgba(7, 17, 27, 0.8)
+      .detail-wrapper
+        min-height 100%
+        width 100%
+        .detail-main
+          margin-top 64px
+          padding-bottom 64px
+          .name
+            text-align center
+            line-height 16px
+            font-size 16px
+            font-weight 700
+      .detail-close
+        position relative
+        width 32px
+        height 32px
+        margin -64px auto 0 auto
+        clear both
+        font-size 32px
 </style>
