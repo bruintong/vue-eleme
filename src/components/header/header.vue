@@ -21,8 +21,12 @@
       </div>
     </div>
     <div class="promotion">
-      <span class="notice">公告：</span>
+      <span class="promotion-title"></span>
       <span class="promotion-info">{{data.promotion_info}}</span>
+      <i class="icon-keyboard_arrow_right"></i>
+    </div>
+    <div class="background">
+      <img :src="data.image_path" width="100%" height="100%">
     </div>
   </div>
 </template>
@@ -50,15 +54,17 @@
   @import "../../common/stylus/mixin.styl";
   .header
     color #fff
-    background #999
-    padding 24px 12px 8px 12px
     white-space nowrap
     font-size 0px
+    position relative
+    background rgba(7, 17, 27, 0.5)
+    overflow hidden
     .content-wrapper
       display flex
       flex-direction row
       line-height 1.5
       margin-bottom 8px
+      padding 24px 12px 0px 12px
       .avatar
         display inline-block
         width 65px
@@ -68,7 +74,7 @@
         flex 1
         display inline-block
         font-size 14px
-        margin-left 14px
+        margin-left 10px
         .brand
           display: inline-block
           width: 30px
@@ -110,11 +116,10 @@
             line-height 12px
       .activity-count
         align-self flex-end
-        right 12px
-        bottom 14px
-        padding 0 8px
-        height 24px
-        line-height 24px
+        padding 0 6px
+        margin-bottom 4px
+        height 20px
+        line-height 20px
         border-radius 10px
         background rgba(0,0,0,0.2)
         text-align center
@@ -123,7 +128,7 @@
           vertical-align top
         .icon-keyboard_arrow_right
           margin-left: 2px
-          line-height: 24px
+          line-height: 20px
           font-size: 10px
     .arrow_right
       position relative
@@ -140,18 +145,38 @@
         border-color #fff
         border-style solid
     .promotion
-      display flex
-      flex-direction: row
-      align-items center
-      width: calc(100vw - 20px)
-      font-size 12px
-      line-height 1.4
-      .notice
+      height 24px
+      line-height 24px
+      position relative
+      padding 2px 12px 2px 12px
+      text-overflow ellipsis
+      overflow hidden
+      white-space nowrap
+      font-size 10px
+      background rgba(7, 17, 27, 0.2)
+      .promotion-title
+        display inline-block
         vertical-align middle
+        width 22px
+        height 12px
+        bg-image('bulletin')
+        background-size 22px 12px
+        background-repeat no-repeat
       .promotion-info
         vertical-align middle
-        text-overflow ellipsis
-        overflow hidden
-        white-space nowrap
-        word-break: keep-all;
+        margin 0px 8px
+        font-size 10px
+      .icon-keyboard_arrow_right
+        position absolute
+        right 8px
+        top: 10px
+        font-size: 10px
+    .background
+      position absolute
+      top 0px
+      left 0px
+      width 100%
+      height 100%
+      z-index -1
+      filter blur(10px)
 </style>
