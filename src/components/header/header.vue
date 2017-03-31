@@ -17,7 +17,7 @@
       </div>
       <div v-if="data.activities" class="activity-count">
         <span class="count">{{data.activities.length}}个</span>
-        <i class="arrow_right"></i>
+        <i class="icon-keyboard_arrow_right"></i>
       </div>
     </div>
     <div class="promotion">
@@ -120,20 +120,25 @@
         text-align center
         .count
           font-size 10px
-        .arrow_right
-          position relative
-          padding-right 4px
-          &::after
-            content ' '
-            position absolute
-            top: 50%
-            margin-top -7px
-            width 6px
-            height 6px
-            transform matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-            border-width 1px 1px 0px 0px
-            border-color #fff
-            border-style solid
+          vertical-align top
+        .icon-keyboard_arrow_right
+          margin-left: 2px
+          line-height: 24px
+          font-size: 10px
+    .arrow_right
+      position relative
+      padding-right 4px
+      &::after
+        content ' '
+        position absolute
+        top: 50%
+        margin-top -7px
+        width 6px
+        height 6px
+        transform matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+        border-width 1px 1px 0px 0px
+        border-color #fff
+        border-style solid
     .promotion
       display flex
       flex-direction: row
