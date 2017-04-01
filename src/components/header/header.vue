@@ -1,5 +1,6 @@
 <template>
   <div class="header">
+
     <div class="content-wrapper">
       <img class="avatar" :src="data.image_path">
       <div class="content">
@@ -8,7 +9,7 @@
           <span class="name">{{data.name}}</span>
         </div>
         <div class="delivery">
-          {{data.delivery_mode.text}} / {{data.order_lead_time}}分钟送达 / {{data.piecewise_agent_fee.tips}}
+          <span v-if="data.delivery_mode">{{data.delivery_mode.text}}</span> / {{data.order_lead_time}}分钟送达 / <span v-if="data.piecewise_agent_fee">{{data.piecewise_agent_fee.tips}}</span>
         </div>
         <div v-if="data.activities" class="activity">
           <span class="icon" :class="classMap[data.activities[0].type]"></span>
@@ -62,6 +63,7 @@
         </div>
       </div>
     </transition>
+
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -97,7 +99,7 @@
       };
     },
     components: {
-        'star': star
+      'star': star
     }
   };
 </script>
@@ -109,6 +111,7 @@
     position relative
     background rgba(7, 17, 27, 0.5)
     overflow hidden
+    white-space nowrap
     .content-wrapper
       display flex
       flex-direction row
@@ -239,6 +242,7 @@
       overflow auto
       background: rgba(7, 17, 27, 0.8)
       backdrop-filter blur(10px)
+      white-space normal
       .fade-enter-active, .fade-leave-active
         transition all opacity 5s
         opacity: 1
