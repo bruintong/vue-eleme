@@ -1,6 +1,6 @@
 <template>
   <div class="goods">
-    <div class="menu-wrapper">
+    <div class="menu-wrapper" ref="menu">
       <ul class="menu">
         <li v-for="item in goods" class="menu-item">
           <span class="text border-1px">
@@ -10,7 +10,7 @@
         </li>
       </ul>
     </div>
-    <div class="foods-wrapper">
+    <div class="foods-wrapper" ref="foods">
       <ul>
         <li v-for="item in goods" class="food-list">
           <h1 class="title">{{item.name}}</h1>
@@ -39,6 +39,8 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import BScroll from 'better-scroll';
+
   const ERR_OK = 0;
   export default {
     props: {
@@ -63,8 +65,17 @@
       this.$axios.get('/api/menu').then((res) => {
         if (res.data.errno === ERR_OK) {
           this.goods = res.data.data;
+          this.$nextTick(() => {
+            this.initScroll();
+          });
         }
       });
+    },
+    methods: {
+      initScroll() {
+        this.menuScroll = new BScroll(this.$refs.menu, {});
+        this.foodsScroll = new BScroll(this.$refs.foods, {});
+      }
     }
   };
 </script>
@@ -123,6 +134,8 @@
         font-size 12px
         color rgb(147, 153, 159)
         background #f3f5f7
+        overflow hidden
+        text-overflow clip
       .food-item
         display flex
         margin 18px
@@ -143,6 +156,8 @@
             line-height 14px
             font-size 14px
             color rgb(7,17,27)
+            overflow hidden
+            text-overflow clip
           .desc, .extra
             line-height 1.2
             font-size 10px
@@ -155,6 +170,7 @@
           .price
             font-weight 700
             font-size 16px
+            margin-top 6px
             .now
               margin-right 8px
               color rgb(240, 20 20)
