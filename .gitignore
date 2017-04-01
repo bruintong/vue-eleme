@@ -2,6 +2,7 @@
 .idea
 node_modules/
 resource
+debug.log
 dist/
 npm-debug.log
 yarn-error.log

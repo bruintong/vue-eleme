@@ -8,7 +8,7 @@
           <span class="name">{{data.name}}</span>
         </div>
         <div class="delivery">
-          {{data.delivery_mode.text}} / {{data.piecewise_agent_fee.tips}}
+          {{data.delivery_mode.text}} / {{data.order_lead_time}}分钟送达 / {{data.piecewise_agent_fee.tips}}
         </div>
         <div v-if="data.activities" class="activity">
           <span class="icon" :class="classMap[data.activities[0].type]"></span>
@@ -32,15 +32,39 @@
       <div class="detail-wrapper clearfix">
         <div class="detail-main">
           <h1 class="name">{{data.name}}</h1>
+          <div class="star-wrapper">
+            <star :size="48" :score="data.rating"></star>
+          </div>
+          <div class="title">
+            <div class="line"></div>
+            <div class="text">优惠信息</div>
+            <div class="line"></div>
+          </div>
+          <ul v-if="data.activities" class="activities">
+            <li class="activity-item" v-for="(item, index) in data.activities">
+              <span class="icon" :class="classMap[data.activities[index].type]"></span>
+              <span class="text">{{data.activities[index].description}}</span>
+            </li>
+          </ul>
+          <div class="title">
+            <div class="line"></div>
+            <div class="text">商家公告</div>
+            <div class="line"></div>
+          </div>
+          <div class="bulletin">
+            <p class="content">{{data.promotion_info}}</p>
+          </div>
         </div>
       </div>
-      <div class="detail-close">
+      <div class="detail-close" @click="hideDetail">
         <i class="icon-close"></i>
       </div>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import star from 'components/star/star';
+
   export default {
     props: {
       data: {
@@ -55,6 +79,9 @@
     methods: {
       showDetail() {
         this.detailShow = true;
+      },
+      hideDetail() {
+        this.detailShow = false;
       }
     },
     created() {
@@ -66,6 +93,9 @@
         '106': 'special',
         'undefined': 'special'
       };
+    },
+    components: {
+        'star': star
     }
   };
 </script>
@@ -73,7 +103,6 @@
   @import "../../common/stylus/mixin.styl";
   .header
     color #fff
-    white-space nowrap
     font-size 0px
     position relative
     background rgba(7, 17, 27, 0.5)
@@ -210,6 +239,7 @@
       .detail-wrapper
         min-height 100%
         width 100%
+        font-size 16px
         .detail-main
           margin-top 64px
           padding-bottom 64px
@@ -218,6 +248,60 @@
             line-height 16px
             font-size 16px
             font-weight 700
+          .star-wrapper
+            margin-top 18px
+            padding 0 2px
+            text-align center
+          .title
+            display flex
+            width 80%
+            margin 30px auto 24px auto
+            .line
+              flex 1
+              position relative
+              top -6px
+              border-bottom 1px solid rgba(255, 255, 255, 0.2)
+            .text
+              padding 0 12px
+              font-size 14px
+          .activities
+            width 80%
+            margin 0 auto
+            .activity-item
+              padding 0 12px
+              margin-bottom 12px
+              font-size 0px
+              &:last-child
+                margin-bottom 0px
+              .icon
+                display inline-block
+                height 16px
+                width 16px
+                margin-right 6px
+                vertical-align middle
+                background-size 16px 16px
+                background-repeat no-repeat
+                &.decrease
+                  bg-image('decrease_2')
+                &.discount
+                  bg-image('discount_2')
+                &.guarantee
+                  bg-image('guarantee_2')
+                &.invoice
+                  bg-image('invoice_2')
+                &.special
+                  bg-image('special_2')
+              .text
+                font-size 12px
+                line-height 16px
+                vertical-align middle
+          .bulletin
+            width 80%
+            margin 0 auto
+            .content
+              padding 0 12px
+              line-height 24px
+              font-size 12px
       .detail-close
         position relative
         width 32px
