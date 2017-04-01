@@ -466,3 +466,14 @@ template {
 a {
   text-decoration: none;
 }
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0;
+}

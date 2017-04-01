@@ -29,7 +29,6 @@ export default {
     this.$axios.get('/api/restaurant').then((res) => {
       if (res.data.errno === ERR_OK) {
         this.restaurant = res.data.data;
-        console.log(this.restaurant);
       }
     });
   },
