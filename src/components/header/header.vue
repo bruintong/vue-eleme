@@ -28,38 +28,40 @@
     <div class="background">
       <img :src="data.image_path" width="100%" height="100%">
     </div>
-    <div v-show="detailShow" class="detail">
-      <div class="detail-wrapper clearfix">
-        <div class="detail-main">
-          <h1 class="name">{{data.name}}</h1>
-          <div class="star-wrapper">
-            <star :size="48" :score="data.rating"></star>
-          </div>
-          <div class="title">
-            <div class="line"></div>
-            <div class="text">优惠信息</div>
-            <div class="line"></div>
-          </div>
-          <ul v-if="data.activities" class="activities">
-            <li class="activity-item" v-for="(item, index) in data.activities">
-              <span class="icon" :class="classMap[data.activities[index].type]"></span>
-              <span class="text">{{data.activities[index].description}}</span>
-            </li>
-          </ul>
-          <div class="title">
-            <div class="line"></div>
-            <div class="text">商家公告</div>
-            <div class="line"></div>
-          </div>
-          <div class="bulletin">
-            <p class="content">{{data.promotion_info}}</p>
+    <transition name="fade">
+      <div v-show="detailShow" class="detail">
+        <div class="detail-wrapper clearfix">
+          <div class="detail-main">
+            <h1 class="name">{{data.name}}</h1>
+            <div class="star-wrapper">
+              <star :size="48" :score="data.rating"></star>
+            </div>
+            <div class="title">
+              <div class="line"></div>
+              <div class="text">优惠信息</div>
+              <div class="line"></div>
+            </div>
+            <ul v-if="data.activities" class="activities">
+              <li class="activity-item" v-for="(item, index) in data.activities">
+                <span class="icon" :class="classMap[data.activities[index].type]"></span>
+                <span class="text">{{data.activities[index].description}}</span>
+              </li>
+            </ul>
+            <div class="title">
+              <div class="line"></div>
+              <div class="text">商家公告</div>
+              <div class="line"></div>
+            </div>
+            <div class="bulletin">
+              <p class="content">{{data.promotion_info}}</p>
+            </div>
           </div>
         </div>
+        <div class="detail-close" @click="hideDetail">
+          <i class="icon-close"></i>
+        </div>
       </div>
-      <div class="detail-close" @click="hideDetail">
-        <i class="icon-close"></i>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -231,11 +233,18 @@
       position fixed
       top 0
       left 0
-      z-index 1
+      z-index 100
       width 100%
       height 100%
       overflow auto
-      background rgba(7, 17, 27, 0.8)
+      background: rgba(7, 17, 27, 0.8)
+      backdrop-filter blur(10px)
+      .fade-enter-active, .fade-leave-active
+        transition all opacity 5s
+        opacity: 1
+      .fade-enter, .fade-leave-active
+        opacity: 0
+        background: rgba(7, 17, 27, 0)
       .detail-wrapper
         min-height 100%
         width 100%
