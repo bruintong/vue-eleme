@@ -214,6 +214,10 @@
       height 100%
       z-index -1
       filter blur(10px)
+    .fade-enter-active, .fade-leave-active
+      transition opacity .5s
+    .fade-enter, .fade-leave-active
+      opacity 0
     .detail
       position fixed
       top 0
@@ -222,15 +226,9 @@
       width 100%
       height 100%
       overflow auto
-      background: rgba(7, 17, 27, 0.8)
+      background: rgba(7, 17, 27, 0.85)
       backdrop-filter blur(10px)
       white-space normal
-      .fade-enter-active, .fade-leave-active
-        transition all opacity 5s
-        opacity: 1
-      .fade-enter, .fade-leave-active
-        opacity: 0
-        background: rgba(7, 17, 27, 0)
       .detail-wrapper
         min-height 100%
         width 100%
