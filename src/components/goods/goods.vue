@@ -39,7 +39,7 @@
         </li>
       </ul>
     </div>
-    <shopcart v-bind:agent="agent"></shopcart>
+    <shopcart :select-foods="selectFoods" v-bind:agent="agent"></shopcart>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -63,16 +63,28 @@
       };
     },
     computed: {
-        currentIndex() {
-            for (let i=0; i<this.listHeight.length; i++) {
-                let height1 = this.listHeight[i];
-                let height2 = this.listHeight[i+1];
-                if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
-                    return i;
-                }
-            }
-            return 0;
+      currentIndex() {
+        for (let i=0; i<this.listHeight.length; i++) {
+          let height1 = this.listHeight[i];
+          let height2 = this.listHeight[i+1];
+          if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
+            return i;
+          }
         }
+        return 0;
+      },
+      selectFoods() {
+        let foods = [];
+        console.log('selectFoods');
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+              if (food.count) {
+                  foods.push(food);
+              }
+          });
+        });
+        return foods;
+      }
     },
     created() {
       this.classMap = {
