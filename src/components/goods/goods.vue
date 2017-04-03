@@ -30,6 +30,9 @@
                   <span class="now" v-if="food.specfoods && food.specfoods[0]">￥{{food.specfoods[0].price}}</span>
                   <span class="old" v-if="food.specfoods && food.specfoods[0] && food.specfoods[0].original_price">￥{{food.specfoods[0].original_price}}</span>
                 </div>
+                <div class="cartcontrol-wrapper">
+                  <cartcontrol :food="food"></cartcontrol>
+                </div>
               </div>
             </li>
           </ul>
@@ -42,6 +45,7 @@
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
   import shopcart from 'components/shopcard/shopcart';
+  import cartcontrol from 'components/cartcontrol/cartcontrol';
 
   const ERR_OK = 0;
   export default {
@@ -100,7 +104,8 @@
             click: true
         });
         this.foodsScroll = new BScroll(this.$refs.foods, {
-            probeType: 3
+            probeType: 3,
+            click: true
         });
         this.foodsScroll.on('scroll', (pos) => {
             this.scrollY = Math.abs(Math.round(pos.y));
@@ -126,7 +131,8 @@
       }
     },
     components: {
-      'shopcart': shopcart
+      'shopcart': shopcart,
+      'cartcontrol': cartcontrol
     }
   };
 </script>
@@ -237,4 +243,8 @@
               text-decoration line-through
               font-size 10px
 
+          .cartcontrol-wrapper
+            position absolute
+            right 0
+            bottom 12px
 </style>

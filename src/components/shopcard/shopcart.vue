@@ -27,12 +27,7 @@
       selectFoods: {
         type: Array,
         default() {
-          return [
-            {
-                price: 10,
-                count: 1
-            }
-          ];
+          return [];
         }
       },
       agent: {
@@ -56,11 +51,11 @@
       },
       payDesc() {
           if (this.totalPrice === 0) {
-            return `￥${this.agent.rules[1].price}元起送`;
+            return '';
           } else if (this.totalPrice > 0 && this.totalPrice <= 20) {
-            return `另需配送费￥${this.agent.rules[1].fee}元`;
+            return '另需配送费￥5元';
           } else {
-            return `另需配送费${this.agent.rules[2].fee}元`;
+            return '免外送费';
           }
       }
     }
