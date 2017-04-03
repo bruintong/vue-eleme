@@ -55,7 +55,9 @@
     },
     created() {
       this.$root.eventHub.$on('add-cart', (target) => {
+        this.$nextTick(() => {
           this.drop(target);
+          });
       });
     },
     beforeDestroy() {
@@ -89,7 +91,7 @@
           total += (food.specfoods[0].price * food.count);
         });
         if (total > 0) {
-          total.toFixed(2);
+          total = total.toFixed(2);
         }
         return total;
       },
@@ -128,7 +130,7 @@
           let ball = this.balls[count];
           if (ball.show) {
             let rect = ball.el.getBoundingClientRect();
-            let y = -(window.innerHeight - rect.bottom - 22);
+            let y = -(window.innerHeight - rect.top - 22);
             el.style.display = '';
             el.style.webkitTransform = `translate3d(0, ${y}px, 0)`;
             el.style.transform = `translate3d(0, ${y}px, 0)`;
