@@ -36,10 +36,12 @@
         </li>
       </ul>
     </div>
+    <shopcart v-bind:agent="agent"></shopcart>
   </div>
 </template>
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
+  import shopcart from 'components/shopcard/shopcart';
 
   const ERR_OK = 0;
   export default {
@@ -52,7 +54,8 @@
       return {
         goods: [],
         listHeight: [],
-        scrollY: 0
+        scrollY: 0,
+        agent: {}
       };
     },
     computed: {
@@ -83,6 +86,11 @@
             this._initScroll();
             this._calculateHeight();
           });
+        }
+      });
+      this.$axios.get('/api/restaurant').then((res) => {
+        if (res.data.errno === ERR_OK) {
+            this.agent = res.data.data.piecewise_agent_fee;
         }
       });
     },
@@ -116,6 +124,9 @@
         let el = foodList[index];
         this.foodsScroll.scrollToElement(el, 300);
       }
+    },
+    components: {
+      'shopcart': shopcart
     }
   };
 </script>

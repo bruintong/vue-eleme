@@ -1,6 +1,5 @@
 <template>
   <div class="header">
-
     <div class="content-wrapper">
       <img class="avatar" :src="data.image_path">
       <div class="content">
