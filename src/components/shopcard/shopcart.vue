@@ -21,12 +21,18 @@
       <div class="ball-container">
         <div v-for="ball in balls" v-show="ball.show">
           <transition
-            name="drop"
-            v-on:before-enter="beforeEnter"
-            v-on:enter="enter"
-            v-on:after-enter="afterEnter">
+            name="drop-outer"
+            v-on:before-enter="beforeEnterOuter"
+            v-on:enter="enterOuter"
+            v-on:after-enter="afterEnterOuter">
             <div class="ball" v-show="ball.show">
-              <div class="inner inner-hook"></div>
+              <transition
+                name="drop-inner"
+                v-on:before-enter="beforeEnterInner"
+                v-on:enter="enterInner"
+                v-on:after-enter="afterEnterInner">
+              <div class="inner inner-hook" v-show="ball.show"></div>
+              </transition>
             </div>
           </transition>
         </div>
@@ -116,30 +122,58 @@
           }
         }
       },
-      beforeEnter(el) {
+      beforeEnterOuter(el) {
+        let count = this.balls.length;
+        while (count--) {
+          let ball = this.balls[count];
+          if (ball.show) {
+            let rect = ball.el.getBoundingClientRect();
+            let y = -(window.innerHeight - rect.bottom - 22);
+            el.style.display = '';
+            el.style.webkitTransform = `translate3d(0, ${y}px, 0)`;
+            el.style.transform = `translate3d(0, ${y}px, 0)`;
+          }
+        }
+      },
+      enterOuter(el) {
+        /* eslint-disable no-unused-vars */
+          let rf = el.offsetHeight;
+          this.$nextTick(() => {
+            el.style.display = '';
+            el.style.webkitTransform = `translate3d(0, 0, 0)`;
+            el.style.transform = `translate3d(0, 0, 0)`;
+          });
+      },
+      afterEnterOuter(el) {
+        let ball = this.dropBalls.shift();
+        if (ball) {
+          ball.show = false;
+          el.style.display = 'none';
+        }
+      },
+      beforeEnterInner(el) {
         let count = this.balls.length;
         while (count--) {
           let ball = this.balls[count];
           if (ball.show) {
             let rect = ball.el.getBoundingClientRect();
             let x = (rect.left - 32);
-            let y = -(window.innerHeight - rect.bottom - 22);
             el.style.display = '';
-            el.style.webkitTransform = `translate3d(${x}px, ${y}px, 0)`;
-            el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+            el.style.webkitTransform = `translate3d(${x}px,0,0)`;
+            el.style.transform = `translate3d(${x}px,0,0)`;
           }
         }
       },
-      enter(el) {
+      enterInner(el) {
         /* eslint-disable no-unused-vars */
         let rf = el.offsetHeight;
         this.$nextTick(() => {
           el.style.display = '';
-          el.style.webkitTransform = `translate3d(0, 0, 0)`;
-          el.style.transform = `translate3d(0, 0, 0)`;
+          el.style.webkitTransform = 'translate3d(0,0,0)';
+          el.style.transform = 'translate3d(0,0,0)';
         });
       },
-      afterEnter(el) {
+      afterEnterInner(el) {
         let ball = this.dropBalls.shift();
         if (ball) {
           ball.show = false;
@@ -240,16 +274,18 @@
             color #fff
 
       .ball-container
+        .drop-outer-enter-active
+          transition: all .5s cubic-bezier(0.49, -0.29, 0.75, 0.41)
         .ball
           position fixed
           left 32px
           bottom 22px
           z-index 200
+          .drop-inner-enter-active
+            transition: all .5s
           .inner
             width 16px
             height 16px
             border-radius 50%
             background rgb(0, 160, 220)
-        .drop-enter-active
-          transition: .4s
 </style>
