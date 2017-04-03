@@ -37,11 +37,11 @@
     computed: {
       totalPrice() {
         let total = 0;
-        console.log(this.selectFoods);
         this.selectFoods.forEach((food) => {
-          total += Math.round(food.specfoods[0].price * 100 * food.count) / 100;
+          total += (food.specfoods[0].price * food.count);
         });
-        return total;
+
+        return total.toFixed(2);
       },
       totalCount() {
         let count = 0;
