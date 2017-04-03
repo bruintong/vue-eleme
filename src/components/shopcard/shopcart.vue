@@ -1,6 +1,6 @@
 <template>
   <div class="shopcart">
-    <div class="content">
+    <div class="content" @click="toggleList">
       <div class="content-left">
         <div class="logo-wrapper">
           <div class="logo" :class="{'highlight' : totalCount > 0}">
@@ -37,10 +37,37 @@
           </transition>
         </div>
       </div>
+      <transition
+        name="fold"
+        v-on:before-enter="beforeEnterFold"
+        v-on:enter="enterFold"
+        v-on:before-leave="beforeLeaveFold"
+        v-on:leave="leaveFold">
+        <div class="shopcart-list" v-show="listShop">
+          <div class="list-header">
+            <h1 class="title">购物车</h1>
+            <span class="empty">清空</span>
+          </div>
+          <div class="list-content">
+            <ul>
+              <li class="food" v-for="food in selectFoods">
+                <span class="name">{{food.name}}</span>
+                <div class="price">
+                  <span>￥{{(food.specfoods[0].price * food.count).toFixed(2)}}</span>
+                </div>
+                <div class="cartcontrol-wrapper">
+                  <cartcontrol :food="food"></cartcontrol>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import cartcontrol from 'components/cartcontrol/cartcontrol';
   export default {
     props: {
       selectFoods: {
@@ -55,6 +82,7 @@
     },
     created() {
       this.$root.eventHub.$on('add-cart', (target) => {
+        // 体验优化，异步执行下落动画
         this.$nextTick(() => {
           this.drop(target);
           });
@@ -81,7 +109,8 @@
           show: false
         }
         ],
-        dropBalls: []
+        dropBalls: [],
+        fold: true
       };
     },
     computed: {
@@ -110,6 +139,14 @@
           } else {
             return '免外送费';
           }
+      },
+      listShop() {
+        if (!this.totalCount) {
+          this.fold = true;
+          return false;
+        }
+        let show = !this.fold;
+        return show;
       }
     },
     methods: {
@@ -181,7 +218,36 @@
           ball.show = false;
           el.style.display = 'none';
         }
+      },
+      beforeEnterFold(el) {
+        el.style.display = '';
+        el.style.transform = 'translate3d(0,0,0)';
+      },
+      enterFold(el) {
+        /* eslint-disable no-unused-vars */
+        let rf = el.offsetHeight;
+        el.style.display = '';
+        el.style.transform = 'translate3d(0,-100%,0)';
+      },
+      beforeLeaveFold(el) {
+        el.style.display = '';
+        el.style.transform = 'translate3d(0,-100%,0)';
+      },
+      leaveFold(el) {
+        /* eslint-disable no-unused-vars */
+        let rf = el.offsetHeight;
+        el.style.display = '';
+        el.style.transform = 'translate3d(0,0,0)';
+      },
+      toggleList() {
+        if (!this.totalCount) {
+           return;
+        }
+        this.fold = !this.fold;
       }
+    },
+    components: {
+      'cartcontrol': cartcontrol
     }
   };
 </script>
@@ -290,4 +356,26 @@
             height 16px
             border-radius 50%
             background rgb(0, 160, 220)
+      .fold-enter-active, .fold-leave-active
+        transition all 0.4s
+      .shopcart-list
+        position absolute
+        top 0
+        left 0
+        z-index -1;
+        width 100%
+       .list-header
+          height 40px
+          line-height 40px
+          padding 0 18px
+          background #f3f5f7
+          border-bottom 1px solid rgba(7, 17, 27, 0.1)
+          .title
+            float left
+            font-size 14px
+            color rgb(7, 17, 27)
+          .empty
+            float right
+            font-size rgb(0, 160, 220)
+            font-size 12px
 </style>
