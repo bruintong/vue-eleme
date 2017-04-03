@@ -25,6 +25,7 @@
         } else {
           this.food.count++;
         }
+        this.$root.eventHub.$emit('add-cart', event.target);
       },
       decreaseCart(event) {
         if (!event._constructed) {
@@ -42,7 +43,7 @@
       transition .5s
     .move-enter, .move-leave-active
       opacity 0
-      transform translate3D(24px, 0, 0) rotate(180deg)
+      transform translate3d(24px, 0, 0) rotate(180deg)
     .cart-decrease, .cart-add
       font-size 24px
       line-height 24px

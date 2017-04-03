@@ -75,7 +75,6 @@
       },
       selectFoods() {
         let foods = [];
-        console.log('selectFoods');
         this.goods.forEach((good) => {
           good.foods.forEach((food) => {
               if (food.count) {

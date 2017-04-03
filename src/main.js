@@ -4,11 +4,13 @@ import Vue from 'vue';
 import axios from 'axios';
 import App from './App';
 import router from './router';
+import Vuex from 'vuex';
 
 import 'common/stylus/index.styl';
 
 Vue.config.productionTip = false;
 
+Vue.use(Vuex);
 Vue.prototype.$axios = axios;
 
 /* eslint-disable no-new */
@@ -16,5 +18,8 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  data: {
+    eventHub: new Vue()
+  }
 });

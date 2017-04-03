@@ -18,6 +18,19 @@
           去结算
         </div>
       </div>
+      <div class="ball-container">
+        <div v-for="ball in balls" v-show="ball.show">
+          <transition
+            name="drop"
+            v-on:before-enter="beforeEnter"
+            v-on:enter="enter"
+            v-on:after-enter="afterEnter">
+            <div class="ball" v-show="ball.show">
+              <div class="inner inner-hook"></div>
+            </div>
+          </transition>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -34,14 +47,45 @@
         type: Object
       }
     },
+    created() {
+      this.$root.eventHub.$on('add-cart', (target) => {
+          this.drop(target);
+      });
+    },
+    beforeDestroy() {
+      this.$root.eventHub.$off('add-cart');
+    },
+    data() {
+      return {
+        balls: [{
+          show: false
+        },
+          {
+          show: false
+        },
+          {
+          show: false
+        },
+          {
+          show: false
+        },
+          {
+          show: false
+        }
+        ],
+        dropBalls: []
+      };
+    },
     computed: {
       totalPrice() {
         let total = 0;
         this.selectFoods.forEach((food) => {
           total += (food.specfoods[0].price * food.count);
         });
-
-        return total.toFixed(2);
+        if (total > 0) {
+          total.toFixed(2);
+        }
+        return total;
       },
       totalCount() {
         let count = 0;
@@ -58,6 +102,49 @@
           } else {
             return '免外送费';
           }
+      }
+    },
+    methods: {
+      drop(el) {
+        for (let i=0; i<this.balls.length; i++) {
+          let ball = this.balls[i];
+          if (!ball.show) {
+            ball.show = true;
+            ball.el = el;
+            this.dropBalls.push(ball);
+            return;
+          }
+        }
+      },
+      beforeEnter(el) {
+        let count = this.balls.length;
+        while (count--) {
+          let ball = this.balls[count];
+          if (ball.show) {
+            let rect = ball.el.getBoundingClientRect();
+            let x = (rect.left - 32);
+            let y = -(window.innerHeight - rect.bottom - 22);
+            el.style.display = '';
+            el.style.webkitTransform = `translate3d(${x}px, ${y}px, 0)`;
+            el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+          }
+        }
+      },
+      enter(el) {
+        /* eslint-disable no-unused-vars */
+        let rf = el.offsetHeight;
+        this.$nextTick(() => {
+          el.style.display = '';
+          el.style.webkitTransform = `translate3d(0, 0, 0)`;
+          el.style.transform = `translate3d(0, 0, 0)`;
+        });
+      },
+      afterEnter(el) {
+        let ball = this.dropBalls.shift();
+        if (ball) {
+          ball.show = false;
+          el.style.display = 'none';
+        }
       }
     }
   };
@@ -152,4 +239,17 @@
             background #00b43c
             color #fff
 
+      .ball-container
+        .ball
+          position fixed
+          left 32px
+          bottom 22px
+          z-index 200
+          .inner
+            width 16px
+            height 16px
+            border-radius 50%
+            background rgb(0, 160, 220)
+        .drop-enter-active
+          transition: .4s
 </style>
