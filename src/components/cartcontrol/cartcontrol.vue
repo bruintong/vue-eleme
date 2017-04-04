@@ -31,7 +31,9 @@
         if (!event._constructed) {
             return;
         }
-        this.food.count--;
+        if (this.food.count > 0) {
+          this.food.count--;
+        }
       }
     }
   };
