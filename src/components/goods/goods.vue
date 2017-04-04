@@ -212,7 +212,7 @@
           width 56px
           vertical-align middle
           font-size 12px
-          border-1px(rgba(7,17,27,0.1))
+          border-1px(rgba(7,17,27,0.2))
     .foods-wrapper
       flex 1
       .title
@@ -230,7 +230,7 @@
         display flex
         margin 18px
         padding-bottom: 18px
-        border-1px(rgba(7,17,27,0.1))
+        border-1px(rgba(7,17,27,0.2))
         &:last-child
           border-none()
           margin-bottom 0px

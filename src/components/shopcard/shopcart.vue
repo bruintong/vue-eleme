@@ -54,7 +54,7 @@
           </div>
           <div class="list-content" ref="shotcart">
             <ul>
-              <li class="food" v-for="food in selectFoods">
+              <li class="food border-1px" v-for="food in selectFoods">
                 <span class="name">{{food.name}}</span>
                 <div class="price">
                   <span>￥{{(food.specfoods[0].price * food.count).toFixed(2)}}</span>
@@ -423,7 +423,7 @@
           position relative
           padding 12px 0
           box-sizing border-box
-          border-1px(rgba(7, 17, 27, 0.1))
+          border-1px(rgba(7, 17, 27, 0.2))
           &:last-child
             border-none()
           .name

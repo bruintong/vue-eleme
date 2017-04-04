@@ -79,7 +79,7 @@
     .rating-type
       padding 18px 0
       margin 0px 18px
-      border-1px(rgba(7, 17, 27, 0.1))
+      border-1px(rgba(7, 17, 27, 0.2))
       font-size 0px
       .block
         display inline-block

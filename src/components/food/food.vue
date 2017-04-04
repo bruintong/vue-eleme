@@ -35,6 +35,22 @@
           <h1 class="title">商品评价</h1>
           <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="ratings"></ratingselect>
         </div>
+        <div class="rating-wrapper">
+          <ul v-show="ratings && ratings.length > 0">
+            <li v-for="rating in ratings" class="rating-item border-1px">
+              <div class="user">
+                <span class="name">{{rating.username}}</span>
+                <img class="avator" width="12" height="12" :src="rating.avatar">
+              </div>
+              <div class="time">{{rating.rated_at}}</div>
+              <p class="text">
+                <span :class="{'icon-thumb_up' : rating.rating_star == 5, 'icon-thumb_down' : rating.rating_star < 5}"></span>
+                <span class="rating-text">{{rating.rating_text}}</span>
+              </p>
+            </li>
+          </ul>
+          <div class="no-rating" v-show="!ratings || ratings.length <= 0"></div>
+        </div>
       </div>
     </div>
   </transition>
@@ -111,6 +127,7 @@
   };
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "../../common/stylus/mixin.styl";
   .move-enter-active, .move-leave-active
     transition 0.25s linear
     transform translate3d(0, 0, 0)
@@ -213,4 +230,47 @@
         line-height 14px
         color rgb(7, 17, 27)
 
+    .rating-wrapper
+      padding 0 18px
+      .rating-item
+        position absolute
+        padding 16px 0
+        border-1px(rgba(7, 17, 27, 0.2))
+        .user
+          position absolute
+          right 0
+          top 16px
+          font-size 0
+          line-height 12px
+          .name
+            display inline-block
+            vertical-align top
+            margin-right 6px
+            font-size 10px
+            color rgb(147, 153, 159)
+          .avator
+            border-radius 50%
+        .time
+          margin-bottom 6px
+          line-height 12px
+          font-size 10px
+          color rgb(147, 153, 159)
+        .text
+          line-height 16px
+          font-size 12px
+          color rgb(7, 17, 27)
+          .icon-thumb_up, .icon-thumb_down
+            line-height 16px
+            margin-right 4px
+            font-size 12px
+            vertical-align middle
+          .icon-thumb_up
+            color rgb(0, 160, 220)
+          .icon-thumb_down
+            color rgb(147, 153, 159)
+          .rating-text
+            font-size 12px
+            line-height 16px
+            color rgb(7, 17, 27)
+            vertical-align middle
 </style>
