@@ -1,51 +1,56 @@
 <template>
-  <div class="goods">
-    <div class="menu-wrapper" ref="menu">
-      <ul class="menu">
-        <li v-for="(item, index) in goods" class="menu-item" :class="{'current' : currentIndex === index}" @click="selectMenu(index, $event)">
+  <div class="container">
+    <div class="goods">
+      <div class="menu-wrapper" ref="menu">
+        <ul class="menu">
+          <li v-for="(item, index) in goods" class="menu-item" :class="{'current' : currentIndex === index}" @click="selectMenu(index, $event)">
           <span class="text border-1px">
             <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>
             {{item.name}}
           </span>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="foods-wrapper" ref="foods">
+        <ul>
+          <li v-for="(item, index) in goods" class="food-list food-list-hook" >
+            <h1 class="title">{{item.name}}</h1>
+            <ul>
+              <li @click="selectFood(food, $event)" v-for="food in item.foods" class="food-item border-1px">
+                <div class="icon" >
+                  <img width="57" height="57" :src="food.image_path">
+                </div>
+                <div class="content">
+                  <h2 class="name">{{food.name}}</h2>
+                  <p class="desc">{{food.description}}</p>
+                  <div class="extra">
+                    <span class="count">月售{{food.month_sales}}份</span>
+                    <span>好评率：100%</span>
+                  </div>
+                  <div class="price">
+                    <span class="now" v-if="food.specfoods && food.specfoods[0]">￥{{food.specfoods[0].price}}</span>
+                    <span class="old" v-if="food.specfoods && food.specfoods[0] && food.specfoods[0].original_price">￥{{food.specfoods[0].original_price}}</span>
+                  </div>
+                  <div class="cartcontrol-wrapper">
+                    <cartcontrol :food="food"></cartcontrol>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <shopcart :select-foods="selectFoods" v-bind:agent="agent"></shopcart>
     </div>
-    <div class="foods-wrapper" ref="foods">
-      <ul>
-        <li v-for="(item, index) in goods" class="food-list food-list-hook" >
-          <h1 class="title">{{item.name}}</h1>
-          <ul>
-            <li v-for="food in item.foods" class="food-item border-1px">
-              <div class="icon" >
-                <img width="57" height="57" :src="food.image_path">
-              </div>
-              <div class="content">
-                <h2 class="name">{{food.name}}</h2>
-                <p class="desc">{{food.description}}</p>
-                <div class="extra">
-                  <span class="count">月售{{food.month_sales}}份</span>
-                  <span>好评率：100%</span>
-                </div>
-                <div class="price">
-                  <span class="now" v-if="food.specfoods && food.specfoods[0]">￥{{food.specfoods[0].price}}</span>
-                  <span class="old" v-if="food.specfoods && food.specfoods[0] && food.specfoods[0].original_price">￥{{food.specfoods[0].original_price}}</span>
-                </div>
-                <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food"></cartcontrol>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <shopcart :select-foods="selectFoods" v-bind:agent="agent"></shopcart>
+    <food :food="selectedFood" ref="food"></food>
   </div>
+
 </template>
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
   import shopcart from 'components/shopcard/shopcart';
   import cartcontrol from 'components/cartcontrol/cartcontrol';
+  import food from 'components/food/food';
 
   const ERR_OK = 0;
   export default {
@@ -59,7 +64,8 @@
         goods: [],
         listHeight: [],
         scrollY: 0,
-        agent: {}
+        agent: {},
+        selectedFood: {}
       };
     },
     computed: {
@@ -139,11 +145,19 @@
         let foodList = this.$refs.foods.getElementsByClassName('food-list-hook');
         let el = foodList[index];
         this.foodsScroll.scrollToElement(el, 300);
+      },
+      selectFood(food, event) {
+        if (!event._constructed) {
+          return;
+        }
+        this.selectedFood = food;
+        this.$refs.food.show();
       }
     },
     components: {
       'shopcart': shopcart,
-      'cartcontrol': cartcontrol
+      'cartcontrol': cartcontrol,
+      'food': food
     }
   };
 </script>
@@ -253,7 +267,6 @@
             .old
               text-decoration line-through
               font-size 10px
-
           .cartcontrol-wrapper
             position absolute
             right 0
