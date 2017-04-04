@@ -18,7 +18,8 @@
           去结算
         </div>
       </div>
-      <div class="ball-container">
+    </div>
+    <div class="ball-container">
         <div v-for="ball in balls" v-show="ball.show">
           <transition
             name="drop-outer"
@@ -37,12 +38,14 @@
           </transition>
         </div>
       </div>
-      <transition
+    <transition
         name="fold"
         v-on:before-enter="beforeEnterFold"
         v-on:enter="enterFold"
+        v-on:after-enter="afterEnterFold"
         v-on:before-leave="beforeLeaveFold"
-        v-on:leave="leaveFold">
+        v-on:leave="leaveFold"
+        v-on:after-leave="afterLeaveFold">
         <div class="shopcart-list" v-show="listShop">
           <div class="list-header">
             <h1 class="title">购物车</h1>
@@ -63,7 +66,6 @@
           </div>
         </div>
       </transition>
-    </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -229,6 +231,9 @@
         el.style.display = '';
         el.style.transform = 'translate3d(0,-100%,0)';
       },
+      afterEnterFold(el) {
+        console.log('afterEnterFold');
+      },
       beforeLeaveFold(el) {
         el.style.display = '';
         el.style.transform = 'translate3d(0,-100%,0)';
@@ -238,6 +243,9 @@
         let rf = el.offsetHeight;
         el.style.display = '';
         el.style.transform = 'translate3d(0,0,0)';
+      },
+      afterLeaveFold(el) {
+        console.log('afterLeaveFold');
       },
       toggleList() {
         if (!this.totalCount) {
@@ -252,6 +260,8 @@
   };
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "../../common/stylus/mixin.styl";
+
   .shopcart
     position fixed
     left 0
@@ -340,42 +350,68 @@
           &.highlight
             background #00b43c
             color #fff
-
-      .ball-container
-        .drop-outer-enter-active
-          transition: all .5s cubic-bezier(0.49, -0.29, 0.75, 0.41)
-        .ball
-          position fixed
-          left 32px
-          bottom 22px
-          z-index 200
-          .drop-inner-enter-active
-            transition: all .5s
-          .inner
-            width 16px
-            height 16px
-            border-radius 50%
-            background rgb(0, 160, 220)
-      .fold-enter-active, .fold-leave-active
-        transition all 0.4s
-      .shopcart-list
-        position absolute
-        top 0
-        left 0
-        z-index -1;
-        width 100%
-       .list-header
-          height 40px
-          line-height 40px
-          padding 0 18px
-          background #f3f5f7
-          border-bottom 1px solid rgba(7, 17, 27, 0.1)
-          .title
-            float left
+    .ball-container
+      .drop-outer-enter-active
+        transition: all .5s cubic-bezier(0.49, -0.29, 0.75, 0.41)
+      .ball
+        position fixed
+        left 32px
+        bottom 22px
+        z-index 200
+        .drop-inner-enter-active
+          transition: all .5s
+        .inner
+          width 16px
+          height 16px
+          border-radius 50%
+          background rgb(0, 160, 220)
+    .fold-enter-active, .fold-leave-active
+      transition all 0.4s
+    .shopcart-list
+      position absolute
+      top 0
+      left 0
+      z-index -1;
+      width 100%
+      .list-header
+        height 40px
+        line-height 40px
+        padding 0 18px
+        background #f3f5f7
+        border-bottom 1px solid rgba(7, 17, 27, 0.1)
+        .title
+          float left
+          font-size 14px
+          color rgb(7, 17, 27)
+        .empty
+          float right
+          color rgb(0, 160, 220)
+          font-size 12px
+      .list-content
+        padding 0 18px
+        max-height 217px
+        overflow hidden
+        background #fff
+        .food
+          position relative
+          padding 12px 0
+          box-sizing border-box
+          border-1px(rgba(7, 17, 27, 0.1))
+          .name
             font-size 14px
+            line-height 24px
             color rgb(7, 17, 27)
-          .empty
-            float right
-            font-size rgb(0, 160, 220)
-            font-size 12px
+          .price
+            position absolute
+            right 90px
+            bottom 12px
+            line-height 24px
+            font-weight 700
+            font-size 14px
+            color rgb(240, 20, 20)
+          .cartcontrol-wrapper
+            position absolute
+            right 0
+            bottom 6px
+
 </style>
