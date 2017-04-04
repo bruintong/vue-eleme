@@ -1,25 +1,26 @@
 <template>
-  <div class="shopcart">
-    <div class="content" @click="toggleList">
-      <div class="content-left">
-        <div class="logo-wrapper">
-          <div class="logo" :class="{'highlight' : totalCount > 0}">
-            <i class="icon-shopping_cart" :class="{'highlight' : totalCount > 0}"></i>
+  <div class="container">
+    <div class="shopcart">
+      <div class="content" @click="toggleList">
+        <div class="content-left">
+          <div class="logo-wrapper">
+            <div class="logo" :class="{'highlight' : totalCount > 0}">
+              <i class="icon-shopping_cart" :class="{'highlight' : totalCount > 0}"></i>
+            </div>
+            <div class="num" v-show="totalPrice > 0">
+              {{totalCount}}
+            </div>
           </div>
-          <div class="num" v-show="totalPrice > 0">
-            {{totalCount}}
+          <div class="price" :class="{'highlight' : totalPrice > 0}">￥{{totalPrice}}</div>
+          <div class="desc" :class="{'highlight' : totalPrice > 0}"><span>{{payDesc}}</span></div>
+        </div>
+        <div class="content-right" @click.stop.prevent="pay">
+          <div class="pay" :class="{'highlight' : totalCount > 0}">
+            去结算
           </div>
         </div>
-        <div class="price" :class="{'highlight' : totalPrice > 0}">￥{{totalPrice}}</div>
-        <div class="desc" :class="{'highlight' : totalPrice > 0}"><span>{{payDesc}}</span></div>
       </div>
-      <div class="content-right">
-        <div class="pay" :class="{'highlight' : totalCount > 0}">
-          去结算
-        </div>
-      </div>
-    </div>
-    <div class="ball-container">
+      <div class="ball-container">
         <div v-for="ball in balls" v-show="ball.show">
           <transition
             name="drop-outer"
@@ -32,13 +33,13 @@
                 v-on:before-enter="beforeEnterInner"
                 v-on:enter="enterInner"
                 v-on:after-enter="afterEnterInner">
-              <div class="inner inner-hook" v-show="ball.show"></div>
+                <div class="inner inner-hook" v-show="ball.show"></div>
               </transition>
             </div>
           </transition>
         </div>
       </div>
-    <transition
+      <transition
         name="fold"
         v-on:before-enter="beforeEnterFold"
         v-on:enter="enterFold"
@@ -46,12 +47,12 @@
         v-on:before-leave="beforeLeaveFold"
         v-on:leave="leaveFold"
         v-on:after-leave="afterLeaveFold">
-        <div class="shopcart-list" v-show="listShop">
+        <div class="shopcart-list" v-show="listShow">
           <div class="list-header">
             <h1 class="title">购物车</h1>
-            <span class="empty">清空</span>
+            <span class="empty" @click="empty">清空</span>
           </div>
-          <div class="list-content">
+          <div class="list-content" ref="shotcart">
             <ul>
               <li class="food" v-for="food in selectFoods">
                 <span class="name">{{food.name}}</span>
@@ -66,10 +67,16 @@
           </div>
         </div>
       </transition>
+    </div>
+    <transition name="fade">
+      <div class="list-mask" v-show="listShow" @click="hideList"></div>
+    </transition>
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import BScroll from 'better-scroll';
   import cartcontrol from 'components/cartcontrol/cartcontrol';
+
   export default {
     props: {
       selectFoods: {
@@ -142,12 +149,23 @@
             return '免外送费';
           }
       },
-      listShop() {
+      listShow() {
         if (!this.totalCount) {
           this.fold = true;
           return false;
         }
         let show = !this.fold;
+        if (show) {
+          this.$nextTick(() => {
+            if (!this.scroll) {
+              this.scroll = new BScroll(this.$refs.shotcart, {
+                click: true
+               });
+            } else {
+                this.scroll.refresh();
+            }
+          });
+        }
         return show;
       }
     },
@@ -232,7 +250,6 @@
         el.style.transform = 'translate3d(0,-100%,0)';
       },
       afterEnterFold(el) {
-        console.log('afterEnterFold');
       },
       beforeLeaveFold(el) {
         el.style.display = '';
@@ -245,13 +262,23 @@
         el.style.transform = 'translate3d(0,0,0)';
       },
       afterLeaveFold(el) {
-        console.log('afterLeaveFold');
       },
       toggleList() {
         if (!this.totalCount) {
            return;
         }
         this.fold = !this.fold;
+      },
+      empty() {
+        this.selectFoods.forEach((food) => {
+            food.count = 0;
+        });
+      },
+      hideList() {
+        this.fold = true;
+      },
+      pay() {
+        window.alert(`支付${this.totalPrice}`);
       }
     },
     components: {
@@ -261,13 +288,13 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../common/stylus/mixin.styl";
-
   .shopcart
     position fixed
     left 0
     bottom 0;
     width 100%
     height 48px
+    z-index: 50
     .content
       display flex
       background #141d27
@@ -397,6 +424,8 @@
           padding 12px 0
           box-sizing border-box
           border-1px(rgba(7, 17, 27, 0.1))
+          &:last-child
+            border-none()
           .name
             font-size 14px
             line-height 24px
@@ -413,5 +442,17 @@
             position absolute
             right 0
             bottom 6px
-
+  .fade-enter-active, .fade-leave-active
+    transition opacity  0.5s
+  .fade-enter, .fade-leave-active
+    opacity 0
+  .list-mask
+    position fixed
+    top 0
+    left 0
+    width 100%
+    height 100%
+    z-index 40
+    backdrop-filter blur(10px)
+    background rgba(7, 17, 27, 0.4)
 </style>
