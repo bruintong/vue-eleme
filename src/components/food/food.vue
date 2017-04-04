@@ -18,13 +18,18 @@
             <span class="now" v-if="food.specfoods && food.specfoods[0]">￥{{food.specfoods[0].price}}</span>
             <span class="old" v-if="food.specfoods && food.specfoods[0] && food.specfoods[0].original_price">￥{{food.specfoods[0].original_price}}</span>
           </div>
+          <div class="cartcontrol-wrapper">
+            <cartcontrol :food="food"></cartcontrol>
+          </div>
+          <transition name="fade">
+            <div class="buy" v-show="!food.count || food.count === 0" @click.stop.prevent="addFirst($event)">加入购物车</div>
+          </transition>
         </div>
-        <div class="cartcontrol-wrapper">
-          <cartcontrol :food="food"></cartcontrol>
+        <split v-show="food.description"></split>
+        <div class="info" v-show="food.description">
+          <h1 class="title">商品信息</h1>
+          <p class="text">{{food.description}}</p>
         </div>
-        <transition name="fade">
-          <div class="buy" v-show="!food.count || food.count === 0" @click.stop.prevent="addFirst($event)">加入购物车</div>
-        </transition>
       </div>
     </div>
   </transition>
@@ -33,6 +38,7 @@
   import Vue from 'vue';
   import BScroll from 'better-scroll';
   import cartcontrol from 'components/cartcontrol/cartcontrol';
+  import split from 'components/split/split';
 
   export default {
     props: {
@@ -70,7 +76,8 @@
       }
     },
     components: {
-      'cartcontrol': cartcontrol
+      'cartcontrol': cartcontrol,
+      'split': split
     }
   };
 </script>
@@ -109,6 +116,7 @@
           font-size 20px
           color #fff
     .content
+      position relative
       padding 18px
       .title
         font-size 16px
@@ -135,25 +143,38 @@
         .old
           text-decoration line-through
           font-size 10px
-    .cartcontrol-wrapper
-      position absolute
-      right 12px
-      bottom 12px
-    .fade-enter-active, .fade-leave-active
-      transition opacity  0.2s
-    .fade-enter, .fade-leave-active
-      opacity 0
-    .buy
-      position absolute
-      right 18px
-      bottom 18px
-      z-index 10
-      line-height 24px
-      padding 0 12px
-      height 24px
-      box-sizing border-box
-      font-size 10px
-      border-radius 12px
-      color #fff
-      background rgb(0, 160, 220)
+      .cartcontrol-wrapper
+        position absolute
+        right 12px
+        bottom 12px
+      .fade-enter-active, .fade-leave-active
+        transition opacity  0.2s
+      .fade-enter, .fade-leave-active
+        opacity 0
+      .buy
+        position absolute
+        right 18px
+        bottom 18px
+        z-index 10
+        line-height 24px
+        padding 0 12px
+        height 24px
+        box-sizing border-box
+        font-size 10px
+        border-radius 12px
+        color #fff
+        background rgb(0, 160, 220)
+    .info
+      padding 18px
+      .title
+        font-size 14px
+        margin-bottom 6px
+        line-height 14px
+        color rgb(7, 17, 27)
+      .text
+        line-height 24px
+        padding 0 8px
+        font-size 12px
+        color rgb(77, 85, 93)
+
 </style>
