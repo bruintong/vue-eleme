@@ -33,7 +33,7 @@
         <split></split>
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
+          <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="ratings"></ratingselect>
         </div>
       </div>
     </div>
@@ -49,6 +49,7 @@
   //  const POSITIVE = 0;
   //  const NEGATIVE = 1;
   const ALL = 2;
+  const ERR_OK = 0;
 
   export default {
     props: {
@@ -65,14 +66,22 @@
           all: '全部',
           positive: '推荐',
           negative: '吐槽'
-        }
+        },
+        ratings: []
       };
+    },
+    created() {
+      this.$axios.get('/api/ratings').then((res) => {
+      if (res.data.errno === ERR_OK) {
+        this.ratings = res.data.data;
+      }
+    });
     },
     methods: {
       show() {
         this.showFlag = true;
         this.selectType = ALL;
-        this.onlyContent = true;
+        this.onlyContent = false;
         this.$nextTick(() => {
           if (!this.scroll) {
             this.scroll = new BScroll(this.$refs.food, {
