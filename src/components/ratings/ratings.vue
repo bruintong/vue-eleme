@@ -59,6 +59,11 @@
   const ALL = 2;
 
   export default {
+    props: {
+      data: {
+        type: Object
+      }
+    },
     data() {
       return {
         restaurant: {},

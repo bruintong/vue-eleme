@@ -1,5 +1,5 @@
 <template>
-  <div class="seller">
+  <div class="seller" ref="seller">
     <div class="seller-content">
       <div class="overview">
         <h1 class="title">{{data.name}}</h1>
@@ -30,10 +30,17 @@
           <p class="content">{{data.description}}</p>
         </div>
       </div>
+      <ul v-if="data.activities" class="activities">
+        <li class="activity-item border-1px" v-for="(item, index) in data.activities">
+          <span class="icon" :class="classMap[data.activities[index].type]"></span>
+          <span class="text">{{data.activities[index].description}}</span>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import BScroll from 'better-scroll';
   import star from 'components/star/star';
   import split from 'components/split/split';
 
@@ -43,6 +50,35 @@
         type: Object
       }
      },
+    created() {
+      this.classMap = {
+        '102': 'decrease',
+        '103': 'discount',
+        '104': 'guarantee',
+        '105': 'invoice',
+        '106': 'special',
+        'undefined': 'special'
+      };
+    },
+    mounted() {
+      this._initScroll();
+    },
+    watch: {
+      'data'() {
+        this._initScroll();
+      }
+    },
+    methods: {
+      _initScroll() {
+        if (!this.scroll) {
+          this.scroll = new BScroll(this.$refs.seller, {
+            click: true
+          });
+        } else {
+          this.scroll.refresh();
+        }
+      }
+    },
     components: {
       'star': star,
       'split': split
@@ -117,4 +153,33 @@
           font-size 12px
           color rgb(240, 20, 20)
 
+    .activities
+      .activity-item
+        padding 16px 12px
+        border-1px(rgba(7, 17, 27, 0.1))
+        font-size 0px
+        &:last-child
+          border-none()
+        .icon
+          display inline-block
+          width 16px
+          height 16px
+          vertical-align top
+          margin-right 6px
+          background-size 16px 16px
+          background-repeat no-repeat
+          &.decrease
+            bg-image('decrease_4')
+          &.discount
+            bg-image('discount_4')
+          &.guarantee
+            bg-image('guarantee_4')
+          &.invoice
+            bg-image('invoice_4')
+          &.special
+            bg-image('special_4')
+        .text
+          font-size 12px
+          line-height 16px
+          color rgb(7, 17, 27)
 </style>
