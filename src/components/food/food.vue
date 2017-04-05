@@ -33,11 +33,11 @@
         <split></split>
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="ratings"></ratingselect>
+          <ratingselect :select-type="selectType1" :only-content="onlyContent1" :desc="desc" :ratings="ratings"></ratingselect>
         </div>
         <div class="rating-wrapper">
           <ul v-show="ratings && ratings.length > 0">
-            <li v-for="rating in ratings" class="rating-item border-1px">
+            <li v-show="needShow(rating.rating_star, rating.rating_text)" v-for="rating in ratings" class="rating-item border-1px">
               <img class="avatar" :src="rating.avatar">
               <div class="rating-content">
                 <span class="name">{{rating.username}}</span>
@@ -62,8 +62,8 @@
   import ratingselect from 'components/ratingselect/ratingselect';
   import split from 'components/split/split';
 
-  //  const POSITIVE = 0;
-  //  const NEGATIVE = 1;
+  const POSITIVE = 0;
+  const NEGATIVE = 1;
   const ALL = 2;
   const ERR_OK = 0;
 
@@ -88,10 +88,34 @@
     },
     created() {
       this.$axios.get('/api/ratings').then((res) => {
-      if (res.data.errno === ERR_OK) {
-        this.ratings = res.data.data;
+        if (res.data.errno === ERR_OK) {
+          this.ratings = res.data.data;
+        }
+      });
+      this.$root.eventHub.$on('ratingtype.select', (type) => {
+        this.selectType = type;
+        this.$nextTick(() => {
+           this.scroll.refresh();
+        });
+      });
+      this.$root.eventHub.$on('content.toggle', (onlyContent) => {
+        this.onlyContent = !onlyContent;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      });
+    },
+    beforeDestroy() {
+      this.$root.eventHub.$off('ratingtype.select');
+      this.$root.eventHub.$off('content.toggle');
+    },
+    computed: {
+      selectType1() {
+        return this.selectType;
+      },
+      onlyContent1() {
+        return this.onlyContent;
       }
-    });
     },
     methods: {
       show() {
@@ -117,6 +141,23 @@
         }
         Vue.set(this.food, 'count', 1);
         this.$root.eventHub.$emit('add-cart', event.target);
+      },
+      needShow(ratingStar, text) {
+        if (this.onlyContent && !text) {
+          return false;
+        }
+        // All: 显示所有的评论
+        // POSITIVE: 显示5星评论
+        // NEGATIVE: 显示低于5星的评论
+        if (this.selectType === ALL) {
+          return true;
+        } else if (this.selectType === POSITIVE) {
+          return ratingStar === 5;
+        } else if (this.selectType === NEGATIVE) {
+          return ratingStar < 5;
+        } else {
+            return true;
+        }
       }
     },
     components: {

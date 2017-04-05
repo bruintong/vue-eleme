@@ -47,14 +47,12 @@
         if (!event._constructed) {
           return;
         }
-        this.selectType = type;
         this.$root.eventHub.$emit('ratingtype.select', type);
       },
       toggleContent(event) {
         if (!event._constructed) {
           return;
         }
-        this.onlyContent = !this.onlyContent;
         this.$root.eventHub.$emit('content.toggle', this.onlyContent);
       }
     },
