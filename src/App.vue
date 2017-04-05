@@ -55,6 +55,7 @@ export default {
           display: block
           font-size: 14px
           color: #4a4a4a
+          font-weight 600
           &.active
             color: #85bdf1
 </style>
