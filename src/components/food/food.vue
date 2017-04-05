@@ -49,7 +49,7 @@
               </div>
             </li>
           </ul>
-          <div class="no-rating" v-show="!ratings || ratings.length <= 0"></div>
+          <div class="no-rating" v-show="!ratings || ratings.length <= 0">暂无评价</div>
         </div>
       </div>
     </div>
@@ -276,50 +276,54 @@
         position relative
         padding 16px 0
         border-1px(rgba(7, 17, 27, 0.2))
-      .avatar
-        position absolute
-        border-radius 50%
-        top 12px
-        left 0px
-        width 36px
-        height 36px
-      .rating-content
-        margin-left 48px
-        position relative
-        .name
-          display inline-block
+        .avatar
           position absolute
+          border-radius 50%
+          top 12px
           left 0px
-          top 0px
-          font-size 12px
-          line-height 16px
-          color rgb(147, 153, 159)
-        .time
-          display inline-block
-          position absolute
-          right 0px
-          top 0px
-          line-height 12px
-          font-size 10px
-          color rgb(147, 153, 159)
-        .text
-          display inline-block
-          margin-top: 16px
-          line-height 16px
-          font-size 12px
-          color rgb(7, 17, 27)
-          .icon-thumb_up, .icon-thumb_down
-            line-height 16px
-            margin-right 4px
+          width 36px
+          height 36px
+        .rating-content
+          margin-left 48px
+          position relative
+          .name
+            display inline-block
+            position absolute
+            left 0px
+            top 0px
             font-size 12px
-            vertical-align middle
-          .icon-thumb_up
-            color rgb(0, 160, 220)
-          .icon-thumb_down
+            line-height 16px
             color rgb(147, 153, 159)
-          .rating-text
-            font-size 12px
+          .time
+            display inline-block
+            position absolute
+            right 0px
+            top 0px
+            line-height 12px
+            font-size 10px
+            color rgb(147, 153, 159)
+          .text
+            display inline-block
+            margin-top: 16px
             line-height 16px
+            font-size 12px
             color rgb(7, 17, 27)
-            vertical-align middle
+            .icon-thumb_up, .icon-thumb_down
+              line-height 16px
+              margin-right 4px
+              font-size 12px
+              vertical-align middle
+            .icon-thumb_up
+              color rgb(0, 160, 220)
+            .icon-thumb_down
+              color rgb(147, 153, 159)
+            .rating-text
+              font-size 12px
+              line-height 16px
+              color rgb(7, 17, 27)
+              vertical-align middle
+      .no-rating
+        padding 16px 0px
+        font-size 12px
+        color rgb(147, 153, 159)
 </style>
