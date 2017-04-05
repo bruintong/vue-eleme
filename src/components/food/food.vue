@@ -38,15 +38,15 @@
         <div class="rating-wrapper">
           <ul v-show="ratings && ratings.length > 0">
             <li v-for="rating in ratings" class="rating-item border-1px">
-              <div class="user">
+              <img class="avatar" :src="rating.avatar">
+              <div class="rating-content">
                 <span class="name">{{rating.username}}</span>
-                <img class="avator" width="12" height="12" :src="rating.avatar">
+                <span class="time">{{rating.rated_at}}</span>
+                <p class="text">
+                  <span :class="{'icon-thumb_up' : rating.rating_star == 5, 'icon-thumb_down' : rating.rating_star < 5}"></span>
+                  <span class="rating-text">{{rating.rating_text}}</span>
+                </p>
               </div>
-              <div class="time">{{rating.rated_at}}</div>
-              <p class="text">
-                <span :class="{'icon-thumb_up' : rating.rating_star == 5, 'icon-thumb_down' : rating.rating_star < 5}"></span>
-                <span class="rating-text">{{rating.rating_text}}</span>
-              </p>
             </li>
           </ul>
           <div class="no-rating" v-show="!ratings || ratings.length <= 0"></div>
@@ -229,33 +229,41 @@
         margin-left 18px
         line-height 14px
         color rgb(7, 17, 27)
-
     .rating-wrapper
       padding 0 18px
       .rating-item
-        position absolute
+        position relative
         padding 16px 0
         border-1px(rgba(7, 17, 27, 0.2))
-        .user
+      .avatar
+        position absolute
+        border-radius 50%
+        top 12px
+        left 0px
+        width 36px
+        height 36px
+      .rating-content
+        margin-left 48px
+        position relative
+        .name
+          display inline-block
           position absolute
-          right 0
-          top 16px
-          font-size 0
-          line-height 12px
-          .name
-            display inline-block
-            vertical-align top
-            margin-right 6px
-            font-size 10px
-            color rgb(147, 153, 159)
-          .avator
-            border-radius 50%
+          left 0px
+          top 0px
+          font-size 12px
+          line-height 16px
+          color rgb(147, 153, 159)
         .time
-          margin-bottom 6px
+          display inline-block
+          position absolute
+          right 0px
+          top 0px
           line-height 12px
           font-size 10px
           color rgb(147, 153, 159)
         .text
+          display inline-block
+          margin-top: 16px
           line-height 16px
           font-size 12px
           color rgb(7, 17, 27)
