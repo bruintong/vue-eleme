@@ -24,6 +24,12 @@
         </ul>
       </div>
       <split></split>
+      <div class="bulletin">
+        <h1 class="title">公告与活动</h1>
+        <div class="content-wrapper border-1px">
+          <p class="content">{{data.description}}</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -96,4 +102,19 @@
             color rbg(7, 17, 27)
             .stress
               font-size 24px
+    .bulletin
+      padding 18px 18px 0 18px
+      .title
+        font-size 14px
+        line-height 14px
+        color rgb(7, 17, 27)
+        margin-bottom 8px
+      .content-wrapper
+        padding 0px 12px 16px 12px
+        border-1px(rgba(7, 17, 27, 0.1))
+        .content
+          line-height 24px
+          font-size 12px
+          color rgb(240, 20, 20)
+
 </style>
