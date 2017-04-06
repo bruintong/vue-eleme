@@ -19,19 +19,25 @@
 
 <script type="text/ecmascript-6">
 import header from 'components/header/header';
+import {urlParse} from 'common/js/util';
 
 const ERR_OK = 0;
 
 export default {
   data() {
     return {
-      restaurant: {}
+      restaurant: {
+        id: (() => {
+          let queryParam = urlParse();
+          return queryParam.id;
+        })()
+      }
     };
   },
   created() {
-    this.$axios.get('/api/restaurant').then((res) => {
+    this.$axios.get('/api/restaurant?id=' + this.restaurant.id).then((res) => {
       if (res.data.errno === ERR_OK) {
-        this.restaurant = res.data.data;
+        this.restaurant = Object.assign({}, this.restaurant, res.data.data);
       }
     });
   },
