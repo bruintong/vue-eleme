@@ -105,10 +105,6 @@
         });
       });
     },
-    beforeDestroy() {
-      this.$root.eventHub.$off('ratingtype.select');
-      this.$root.eventHub.$off('content.toggle');
-    },
     computed: {
       selectType1() {
         return this.selectType;

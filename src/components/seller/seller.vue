@@ -78,9 +78,7 @@
     data() {
       return {
         favorite: (() => {
-            console.log(this.data.id);
           let favorite = loadFromLocal(this.data.id, 'favorite', false);
-          console.log(favorite);
           return favorite;
         })()
       };
@@ -138,7 +136,6 @@
           return;
         }
         this.favorite = !this.favorite;
-        console.log(this.data.id);
         saveToLocal(this.data.id, 'favorite', this.favorite);
       }
     },
