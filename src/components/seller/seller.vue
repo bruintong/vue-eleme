@@ -67,16 +67,24 @@
   import BScroll from 'better-scroll';
   import star from 'components/star/star';
   import split from 'components/split/split';
+  import {saveToLocal, loadFromLocal} from '../../common/js/save.js';
 
   export default {
     props: {
       data: {
         type: Object
-      },
-      favorite: {
-        type: Boolean
       }
      },
+    data() {
+      return {
+        favorite: (() => {
+            console.log(this.data.id);
+          let favorite = loadFromLocal(this.data.id, 'favorite', false);
+          console.log(favorite);
+          return favorite;
+        })()
+      };
+    },
     created() {
       this.classMap = {
         '102': 'decrease',
@@ -130,6 +138,8 @@
           return;
         }
         this.favorite = !this.favorite;
+        console.log(this.data.id);
+        saveToLocal(this.data.id, 'favorite', this.favorite);
       }
     },
     computed: {
@@ -142,6 +152,9 @@
       },
       favoriteText() {
         return this.favorite ? '已收藏' : '收藏';
+      },
+      restaurantId() {
+        return this.data.id;
       }
     },
     components: {
