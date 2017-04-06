@@ -47,6 +47,15 @@
           </ul>
         </div>
       </div>
+      <split></split>
+      <div class="seller-info">
+        <h1 class="title border-1px">商家信息</h1>
+        <ul class="supports" v-show="data.supports">
+          <li v-for="support in data.supports" class="support-item border-1px">{{support.description}}</li>
+        </ul>
+        <div class="address">地址：{{data.address}}</div>
+        <div class="opening-hours">营业时间：{{filteredOpeningHours}}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -96,7 +105,6 @@
           let picWidth = 120;
           let margin = 6;
           let width = (picWidth + margin) * this.data.pics.length - margin;
-          console.log(width);
           this.$refs.picList.style.width = width + 'px';
           this.$nextTick(() => {
             if (!this.picScroll) {
@@ -109,6 +117,15 @@
             }
           });
         }
+      }
+    },
+    computed: {
+      filteredOpeningHours() {
+        if (this.data.opening_hours) {
+          let hours = this.data.opening_hours[0].split('/');
+          return (hours[0] + '-' + hours[1]);
+        }
+        return '';
       }
     },
     components: {
@@ -233,5 +250,25 @@
             margin-right 6px
             &.last-child
               margin-right 0px
-
+    .seller-info
+      padding 18px 18px 0px 18px
+      .title
+        font-size 14px
+        line-height 14px
+        color rgb(7, 17, 27)
+        padding-bottom 12px
+        border-1px(rgba(7, 17, 27, 0.1))
+      .supports
+        .support-item
+          padding 16px 0px
+          font-size 12px
+          line-height 18px
+          border-1px(rgba(7, 17, 27, 0.1))
+      .address, .opening-hours
+        padding 16px 0px
+        font-size 12px
+        line-height 18px
+        border-1px(rgba(7, 17, 27, 0.1))
+      .opening-hours
+        border-none()
 </style>
