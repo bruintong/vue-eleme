@@ -8,6 +8,10 @@
           <span class="text">({{data.rating_count}})</span>
           <span class="text">月售{{data.recent_order_num}}单</span>
         </div>
+        <div class="favorite" @click="toggleFavorite($event)">
+          <span class="icon-favorite" :class="{'active': favorite}"></span>
+          <span class="text">{{favoriteText}}</span>
+        </div>
         <ul class="remark">
           <li class="block">
             <h2>起送价</h2>
@@ -68,6 +72,9 @@
     props: {
       data: {
         type: Object
+      },
+      favorite: {
+        type: Boolean
       }
      },
     created() {
@@ -117,6 +124,12 @@
             }
           });
         }
+      },
+      toggleFavorite(event) {
+        if (!event._constructed) {
+          return;
+        }
+        this.favorite = !this.favorite;
       }
     },
     computed: {
@@ -126,6 +139,9 @@
           return (hours[0] + '-' + hours[1]);
         }
         return '';
+      },
+      favoriteText() {
+        return this.favorite ? '已收藏' : '收藏';
       }
     },
     components: {
@@ -187,6 +203,23 @@
             color rbg(7, 17, 27)
             .stress
               font-size 24px
+    .favorite
+      position absolute
+      right 11px
+      top 18px
+      width 50px
+      text-align center
+      .icon-favorite
+        display block
+        font-size 24px
+        line-height 24px
+        color #d4d6d9
+        &.active
+          color rgb(240, 20, 20)
+      .text
+        font-size 10px
+        line-height 10px
+        color rgb(77, 85, 93)
     .bulletin
       padding 18px 18px 0 18px
       .title
