@@ -12,8 +12,9 @@
         <router-link to="/seller">商家</router-link>
       </div>
     </div>
-
-    <router-view :data="restaurant"></router-view>
+    <keep-alive>
+      <router-view :data="restaurant"></router-view>
+    </keep-alive>
   </div>
 </template>
 
