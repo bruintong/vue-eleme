@@ -146,6 +146,8 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../common/stylus/mixin.styl";
+  @import "../../common/stylus/base.styl";
+
   .ratings
     position absolute
     top 170px
