@@ -1,8 +1,10 @@
 # vue-eleme
+基于 vue2 的外卖APP商家页面
 
-> A Vue.js project
+## 技术栈
+vue2 + vue-router + webpack + axios + ES6 + stylus
 
-## Build Setup
+## 项目运行
 
 ``` bash
 # install dependencies
@@ -16,15 +18,11 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## 预览
+
+![商家页面](https://github.com/bruintong/resource/blob/master/screenshots/vue-eleme/goods.gif)
+
+## License
+MIT
