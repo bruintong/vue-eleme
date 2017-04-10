@@ -43,8 +43,6 @@ export default {
     });
   },
   beforeDestroy() {
-    this.$root.eventHub.$off('ratingtype.select');
-    this.$root.eventHub.$off('content.toggle');
   },
   name: 'app',
   components: {

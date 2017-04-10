@@ -33,7 +33,7 @@
         <split></split>
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <ratingselect :select-type="selectType1" :only-content="onlyContent1" :desc="desc" :ratings="ratings"></ratingselect>
+          <ratingselect :select-type="selectType1" :only-content="onlyContent1" :desc="desc" :ratings="ratings" @selectRating="selectRating" @toggleContent="toggleContent"></ratingselect>
         </div>
         <div class="rating-wrapper">
           <ul v-show="ratings && ratings.length > 0">
@@ -92,18 +92,6 @@
           this.ratings = res.data.data;
         }
       });
-      this.$root.eventHub.$on('ratingtype.select', (type) => {
-        this.selectType = type;
-        this.$nextTick(() => {
-           this.scroll.refresh();
-        });
-      });
-      this.$root.eventHub.$on('content.toggle', (onlyContent) => {
-        this.onlyContent = !onlyContent;
-        this.$nextTick(() => {
-          this.scroll.refresh();
-        });
-      });
     },
     computed: {
       selectType1() {
@@ -154,6 +142,18 @@
         } else {
             return true;
         }
+      },
+      selectRating(type) {
+        this.selectType = type;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      },
+      toggleContent(onlyContent) {
+        this.onlyContent = !onlyContent;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
       }
     },
     components: {

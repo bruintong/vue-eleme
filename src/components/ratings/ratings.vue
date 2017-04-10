@@ -25,10 +25,12 @@
         </div>
       </div>
       <split></split>
-      <ratingselect :select-type="selectType1" :only-content="onlyContent1" :desc="desc" :ratings="ratings"></ratingselect>
+      <ratingselect :select-type="selectType1" :only-content="onlyContent1" :desc="desc" :ratings="ratings"
+                    @selectRating="selectRating" @toggleContent="toggleContent"></ratingselect>
       <div class="rating-wrapper">
         <ul>
-          <li v-show="needShow(rating.rating_star, rating.rating_text)" v-for="rating in ratings" class="rating-item border-1px">
+          <li v-show="needShow(rating.rating_star, rating.rating_text)" v-for="rating in ratings"
+              class="rating-item border-1px">
             <div class="avatar">
               <img width="28px" height="28px" :src="rating.avatar">
             </div>
@@ -97,18 +99,6 @@
           });
         }
       });
-      this.$root.eventHub.$on('ratingtype.select', (type) => {
-        this.selectType = type;
-        this.$nextTick(() => {
-          this.scroll.refresh();
-        });
-      });
-      this.$root.eventHub.$on('content.toggle', (onlyContent) => {
-        this.onlyContent = !onlyContent;
-        this.$nextTick(() => {
-          this.scroll.refresh();
-        });
-      });
     },
     computed: {
       selectType1() {
@@ -135,6 +125,18 @@
         } else {
           return true;
         }
+      },
+      selectRating(type) {
+        this.selectType = type;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      },
+      toggleContent(onlyContent) {
+        this.onlyContent = !onlyContent;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
       }
     },
     components: {
